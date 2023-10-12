@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rock, Paper, Scissors Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: antiquewhite;
+        }
+        #result {
+            font-size: 24px;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+        #choices {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+        .choice {
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Rock, Paper, Scissors Game</h1>
+    <div id="result">Choose your move:</div>
+    <div id="choices">
+        <div class="choice" onclick="playGame('rock')">Rock</div>
+        <div class="choice" onclick="playGame('paper')">Paper</div>
+        <div class="choice" onclick="playGame('scissors')">Scissors</div>
+    </div>
+    <script>
+        function playGame(playerChoice) {
+            const choices = ['rock', 'paper', 'scissors'];
+            const computerChoice = choices[Math.floor(Math.random() * 3)];
+
+            const result = getResult(playerChoice, computerChoice);
+
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerText = `You chose ${playerChoice}. Computer chose ${computerChoice}. ${result}`;
+
+            highlightChoice(playerChoice, computerChoice);
+        }
+
+        function getResult(player, computer) {
+            if (player === computer) {
+                return "It's a tie!";
+            } else if ((player === 'rock' && computer === 'scissors') ||
+                       (player === 'paper' && computer === 'rock') ||
+                       (player === 'scissors' && computer === 'paper')) {
+                return "You win!";
+            } else {
+                return "Computer wins!";
+            }
+        }
+
+        function highlightChoice(player, computer) {
+            const choices = document.querySelectorAll('.choice');
+            choices.forEach(choice => choice.style.border = 'none');
+
+            const playerChoice = document.querySelector(`.choice:contains(${player})`);
+            const computerChoice = document.querySelector(`.choice:contains(${computer})`);
+
+            playerChoice.style.border = '2px solid green';
+            computerChoice.style.border = '2px solid red';
+        }
+
+        // Custom contains function for querySelector
+        document.querySelector.prototype.contains = function (text) {
+            return this.innerText.toLowerCase().includes(text.toLowerCase());
+        };
+    </script>
+</body>
+</html>
